@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
-import Input from '../../components/UI/Input/Input';
+import Handle from '../../components/Handle/Handle';
 import Modal from '../../components/UI/Modal/Modal';
 
 class Main extends Component{
@@ -9,10 +9,17 @@ class Main extends Component{
         createName: true
     }
 
+    closeModal = () => {
+        this.setState({ createName: false });
+    }
+
     render () {
-        let inputName = <Input />
         return (
             <div>
+            <Modal show={this.state.createName}>
+                <Handle closeModal={this.closeModal}/>
+            </Modal>
+            {this.props.name}
             </div>
         )
     }
