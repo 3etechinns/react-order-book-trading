@@ -1,0 +1,27 @@
+.OrderBook {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 500px;
+    margin: 8px 0;
+}
+
+td, th {
+    padding: 12px;
+}
+
+td {
+    text-align: right;
+}
+
+
+.Head {
+    background-color: #19bd9b;
+    border-bottom: 2px solid #dddddd;
+    color: #34495e;
+}
+
+.Body {
+    background-color: #34495e;
+    color: #f5fee9;
+}

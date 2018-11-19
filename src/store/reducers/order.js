@@ -7,14 +7,6 @@ const initialState = {
     ...order
 }
 
-const changeName = (state, action) => {
-    return updateObject(state, {name: action.name})
-}
-
-const updateBalance = (state, action) => {
-    return updateObject(state, {balance: action.balance})
-}
-
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         

@@ -1,0 +1,16 @@
+.Type {
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.Price {
+    font-weight: 600;
+}
+
+.Ask {
+    color: red;
+}
+
+.Bid {
+    color: #35f24b;
+}

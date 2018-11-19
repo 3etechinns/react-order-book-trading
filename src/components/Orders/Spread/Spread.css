@@ -1,0 +1,16 @@
+.Row {
+    border: 2px solid #dddddd;
+}
+
+.Row td {
+    border: 0;
+}
+
+.Row td:nth-child(1) {
+    display: flex;
+    justify-content: space-between;
+}
+
+.Row td:nth-child(1) span:nth-child(2) {
+    font-weight: 600;
+}

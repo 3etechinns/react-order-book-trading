@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Handle from '../../components/Handle/Handle';
 import Modal from '../../components/UI/Modal/Modal';
 import User from './User/User';
+import OrderBook from '../OrderBook/OrderBook';
 
 class Dashboard extends Component{
     state = {
@@ -21,6 +22,7 @@ class Dashboard extends Component{
                 </Modal>
                 
                 <User isNameSet={!this.state.createName} />
+                <OrderBook />
             </div>
         )
     }
