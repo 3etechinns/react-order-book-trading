@@ -16,10 +16,11 @@ class Main extends Component{
     render () {
         return (
             <div>
-            <Modal show={this.state.createName}>
-                <Handle closeModal={this.closeModal}/>
-            </Modal>
-            {this.props.name}
+                <Modal show={this.state.createName}>
+                    <Handle closeModal={this.closeModal}/>
+                </Modal>
+                
+                
             </div>
         )
     }
