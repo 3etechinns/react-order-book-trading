@@ -1,9 +1,10 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility';
+import user from '../../data/user.json';
+
 
 const initialState = {
-    name: null,
-    balace: null
+    ...user
 }
 
 const changeName = (state, action) => {
