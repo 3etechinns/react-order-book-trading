@@ -1,10 +1,10 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility';
-import user from '../../assets/data/user.json';
+import order from '../../assets/data/order-book.json';
 
 
 const initialState = {
-    ...user
+    ...order
 }
 
 const changeName = (state, action) => {
@@ -17,8 +17,7 @@ const updateBalance = (state, action) => {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.CHANGE_NAME: return changeName(state, action);
-        case actionTypes.UPDATE_BALANCE: return updateBalance(state, action);
+        
         default:
             return state;
     }
