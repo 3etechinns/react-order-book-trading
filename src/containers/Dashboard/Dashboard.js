@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import * as actions from '../../store/actions/index';
+
 import Handle from '../../components/Handle/Handle';
 import Modal from '../../components/UI/Modal/Modal';
+import User from './User/User';
 
-class Main extends Component{
+class Dashboard extends Component{
     state = {
         createName: true
     }
@@ -20,23 +20,10 @@ class Main extends Component{
                     <Handle closeModal={this.closeModal}/>
                 </Modal>
                 
-                
+                <User isNameSet={!this.state.createName} />
             </div>
         )
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        name: state.user.name
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        userInit: () => dispatch(actions.userInit()),   //Run once
-        changeName: (name) => dispatch(actions.changeName(name)),
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default Dashboard;
