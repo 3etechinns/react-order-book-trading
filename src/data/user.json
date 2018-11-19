@@ -1,0 +1,12 @@
+{
+  "name": "{insert your name}",
+  "balances": [
+    {
+      "symbol": "PHP",
+      "balance": 10000
+    }, {
+      "symbol": "TestCoin",
+      "balance": 3500
+    }
+  ]
+}
