@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
 import Input from '../../components/UI/Input/Input';
+import Modal from '../../components/UI/Modal/Modal';
 
 class Main extends Component{
     state = {
