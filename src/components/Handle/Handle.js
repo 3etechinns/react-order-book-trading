@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../store/actions/index';
 import Input from '../UI/Input/Input';
+import Button from '../UI/Button/Button';
 
 class Handle extends Component {
     state = {
@@ -17,7 +18,8 @@ class Handle extends Component {
             config: {
                 placeholder: 'Full Name'
             }
-        }
+        },
+        formIsValid: false
     }
 
     inputChangeHandler = (event) => {
@@ -47,7 +49,7 @@ class Handle extends Component {
         }
         
         if (rules.isName) {
-            const re = /^(([A-Za-z]+[\-\']?)*([A-Za-z]+)?\s)+([A-Za-z]+[\-\']?)*([A-Za-z]+)?$/;
+            const re = /^\s*([A-Za-z]{1,}([\.,] |[-']| )?)+[A-Za-z]+\.?\s*$/;
             isValid = isValid && re.test(String(value).toLowerCase());
         }
 
@@ -79,10 +81,8 @@ class Handle extends Component {
                         touched={this.state.name.touched}
                         changed={(event) => this.inputChangeHandler(event)}
                     />
-
-                    <button >
-                        Order
-                    </button>
+                    
+                    <Button btnType="Success" disabled={!this.state.formIsValid}>Submit</Button>
                 </form>            
             </div>
         )
