@@ -1,4 +1,5 @@
 import React from 'react';
+import classes from './Info.css';
 
 const info = (props) => {
      
@@ -10,14 +11,14 @@ const info = (props) => {
     if (props.isNameSet) {
         information = (
             <div>
-                <h1>Welcome {props.user.name}!</h1>
+                <h1 className={classes.Name}>Welcome {props.user.name}!</h1>
                 {balances}
             </div>
         );
     }
 
     return (
-        <div>
+        <div className={classes.Info}>
             {information}
         </div>
     )
