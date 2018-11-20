@@ -32,11 +32,14 @@ class OrderForm extends Component {
                 type: 'input',
                 config: {
                     type: 'number',
-                    placeholder: 'Price'
+                    placeholder: 'Price',
+                    min:'0'
                 },
                 value: '',
                 validation: {
-                    required: true
+                    required: true,
+                    isNumber: true,
+                    minNumber: 0
                 },
                 valid: false,
                 touched: false
@@ -45,11 +48,14 @@ class OrderForm extends Component {
                 type: 'input',
                 config: {
                     type: 'number',
-                    placeholder: 'Volume'
+                    placeholder: 'Volume',
+                    min:'0'
                 },
                 value: '',
                 validation: {
-                    required: true
+                    required: true,
+                    isNumber: true,
+                    minNumber: 0
                 },
                 valid: false,
                 touched: false
@@ -58,11 +64,14 @@ class OrderForm extends Component {
                 type: 'input',
                 config: {
                     type: 'number',
-                    placeholder: 'Total'
+                    placeholder: 'Total',
+                    min:'0'
                 },
                 value: '',
                 validation: {
-                    required: true
+                    required: true,
+                    isNumber: true,
+                    minNumber: 0
                 },
                 valid: false,
                 touched: false
@@ -72,13 +81,6 @@ class OrderForm extends Component {
     }
 
     inputChangeHandler = (event, elementID) => {
-        let connectedElementID = null;
-        if(elementID === "total") {
-            connectedElementID = "volume";
-        } else if (elementID === "volume") {
-            connectedElementID = "total";
-        }
-        
 
         const updatedOrderForm = {
             ...this.state.orderForm
@@ -89,9 +91,18 @@ class OrderForm extends Component {
         }
         
         updatedOrderElement.value = event.target.value;
-        updatedOrderElement.valid = this.checkValidity(updatedOrderElement.value, updatedOrderElement.validation);
         updatedOrderElement.touched = true;
         updatedOrderForm[elementID] = updatedOrderElement;
+
+        if(elementID === "price" && updatedOrderForm['volume'].value > 0 || elementID === "volume" && updatedOrderForm['price'].value > 0) {
+            updatedOrderForm['total'].value = updatedOrderForm['volume'].value * updatedOrderForm['price'].value;
+        } else if(elementID === "total" && updatedOrderForm['price'].value > 0) {
+            updatedOrderForm['volume'].value = updatedOrderForm['total'].value / updatedOrderForm['price'].value;
+        }
+
+        updatedOrderForm['volume'].valid = this.checkValidity(updatedOrderForm['volume'].value, updatedOrderForm['volume'].validation);
+        updatedOrderForm['total'].valid = this.checkValidity(updatedOrderForm['total'].value, updatedOrderForm['total'].validation);
+        updatedOrderForm['price'].valid = this.checkValidity(updatedOrderForm['price'].value, updatedOrderForm['price'].validation);
 
         let formIsValid = true;
         for (let elementID in updatedOrderForm) {
@@ -109,15 +120,16 @@ class OrderForm extends Component {
         }
 
         if (rules.required) {
-            isValid = isValid && value.trim() !== '';
+            isValid = isValid && value.toString().trim() !== '';
         }
-        
-        if (rules.minLength) {
-            isValid = isValid && value.length >= rules.minLength
+
+        if (rules.isNumber) {
+            const re = /^\d+$/;
+            isValid = isValid && re.test(String(value).toLowerCase());
         }
-        
-        if (rules.maxLength) {
-            isValid = isValid && value.length <= rules.maxLength
+
+        if (rules.minNumber || rules.minNumber === 0) {
+            isValid = isValid && value > rules.minNumber
         }
 
         return isValid;
@@ -136,6 +148,7 @@ class OrderForm extends Component {
         let form = arr.map(el => (
             <Input 
                 key={el.id}
+                noMessage={true}
                 elementType={el.config.type}
                 elementConfig={el.config.config}
                 value={el.config.value}
