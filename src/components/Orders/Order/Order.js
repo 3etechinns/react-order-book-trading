@@ -11,7 +11,7 @@ const order = (props) => {
     return (
         <tr className={classes.Order}>
             <td className={priceClass.join(' ')}>{Number.parseFloat(props.price).toFixed(4)}</td>
-            <td className={classes.Volume}>{Number.parseFloat(props.volume).toFixed(4)}</td>
+            <td className={classes.Volume}>{Number.parseFloat(props.closed ? props.originalVolume : props.volume).toFixed(4)}</td>
             <td className={classes.Type}>{props.type}</td>            
         </tr>
     )

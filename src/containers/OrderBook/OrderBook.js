@@ -16,6 +16,7 @@ class OrderBook extends Component {
     render () {
         const asks = [];
         const bids = [];
+        let spread = null;
         for(let key in this.props.orders){
             if(this.props.orders[key].type === "ask" && !this.props.orders[key].closed){
                 asks.push({
@@ -31,7 +32,9 @@ class OrderBook extends Component {
         asks.sort((a, b) => b.price - a.price);
         bids.sort((a, b) => b.price - a.price);
 
-        const spread = asks[asks.length - 1].price -  bids[0].price;
+        if(asks[asks.length - 1] && bids[0]){
+            spread = asks[asks.length - 1].price -  bids[0].price;
+        }
 
         
         const heading = this.state.title.map(name => (
@@ -46,7 +49,7 @@ class OrderBook extends Component {
                 <tbody className={classes.Body}>
                 <Orders list={asks} type="ask"/>
                 <Spread
-                    spread={+spread.toFixed(4)}
+                    spread={spread ? +spread.toFixed(4) : null}
                     symbol={this.props.symbol}
                 />
                 <Orders list={bids} type="bid"/>

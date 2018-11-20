@@ -4,7 +4,8 @@ import order from '../../assets/data/order-book.json';
 
 
 const initialState = {
-    order: [...order]
+    order: [...order],
+    hasOrdered: false
 }
 
 const executeOrder = (state, action) => {
@@ -13,7 +14,9 @@ const executeOrder = (state, action) => {
     const order = {
         ...action.order,
         id: `order-book-${state.order.length+1}`,
-        user: action.user
+        user: action.user,
+        closed: false,
+        originalVolume: action.order.volume
     }
     console.log(123,order)
     const type = order.type === 'ask' ? 'bid' : 'ask';
@@ -68,7 +71,8 @@ const executeOrder = (state, action) => {
     }
 
     const updatedState = {
-        order: [...arr.concat(order).concat(store)]
+        order: [...arr.concat(order).concat(store)],
+        hasOrdered: true
     }
     return updateObject(state, updatedState);
 }

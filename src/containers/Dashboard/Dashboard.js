@@ -6,6 +6,7 @@ import Modal from '../../components/UI/Modal/Modal';
 import User from './User/User';
 import OrderBook from '../OrderBook/OrderBook';
 import OrderForm from '../OrderForm/OrderForm';
+import YourOrder from '../YourOrder/YourOrder';
 
 class Dashboard extends Component{
     state = {
@@ -28,6 +29,7 @@ class Dashboard extends Component{
                     <OrderBook />
                     <div className={classes.Row}>
                         <OrderForm />
+                        <YourOrder />
                     </div>
                 </div>
             </div>

@@ -152,17 +152,18 @@ class OrderForm extends Component {
             ...formData
         }
 
-        if(order.type === 'bid' && order.total > this.props.balanceFiat ) {
-            this.setState({errorMessage: `ERROR: You only have ${this.props.balance[0].symbol} ${this.props.balance[0].price}.`})
+
+        if(order.type === 'bid' && order.total > this.props.balance[0].balance ) {
+            this.setState({errorMessage: `ERROR: You only have ${this.props.balance[0].symbol} ${this.props.balance[0].balance}.`})
             return
-        } else if(order.type ==='ask' && order.volume > this.props.balanceCrypto) {
-            this.setState({errorMessage: `ERROR: You only have ${this.props.balance[1].symbol} ${this.props.balance[1].symbol}.`})
+        } else if(order.type ==='ask' && order.volume > this.props.balance[1].balance) {
+            this.setState({errorMessage: `ERROR: You only have ${this.props.balance[1].symbol} ${this.props.balance[1].balance}.`})
             return
         }
 
         // If it reaches here, I can edit value for the balance.
         this.props.updateBalance(order);
-        this.props.executeOrder(order);
+        this.props.executeOrder(order, this.props.user);
     }
 
     render () {
@@ -214,8 +215,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         updateBalance: (balance) => dispatch(actionTypes.updateBalance(balance)),
-        addOrder: (order, user) => dispatch(actionTypes.addOrder(order, user)),
-        executeOrder: (order) => dispatch(actionTypes.executeOrder(order)),
+        executeOrder: (order, user) => dispatch(actionTypes.executeOrder(order, user)),
     }
 }
 

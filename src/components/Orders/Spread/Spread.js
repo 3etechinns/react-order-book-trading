@@ -6,7 +6,7 @@ const spread = (props) => {
         <tr className={classes.Row}>
             <td>
                 <span>{props.symbol} Spread:</span>
-                <span>{props.spread.toFixed(4)}</span>
+                <span>{props.spread ? props.spread.toFixed(4):null}</span>
             </td>
             <td></td>
             <td></td>
