@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import classes from './YourOrder.css';
 import { connect } from 'react-redux';
 import Orders from '../../components/Orders/Orders';
-import Spread from '../../components/Orders/Spread/Spread';
 class YourOrder extends Component {
 
     state = {
@@ -24,7 +23,6 @@ class YourOrder extends Component {
     
     render () {
         const order = [];
-        let heading = null;
         if(this.props.hasOrdered) {
             for(let key in this.props.orders){
                 const theState = this.state.state === 'open' ? !this.props.orders[key].closed : this.props.orders[key].closed;
@@ -41,10 +39,11 @@ class YourOrder extends Component {
                     sensitivity: 'base'
                 });
             });
-            heading = this.state.title.map(name => (
-                <th key={name}>{name}</th>
-            ))
         }
+
+        const heading = this.state.title.map(name => (
+            <th key={name}>{name}</th>
+        ))
 
 
         return (

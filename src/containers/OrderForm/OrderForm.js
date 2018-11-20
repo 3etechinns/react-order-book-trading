@@ -162,8 +162,86 @@ class OrderForm extends Component {
         }
 
         // If it reaches here, I can edit value for the balance.
-        this.props.updateBalance(order);
-        this.props.executeOrder(order, this.props.user);
+        this.props.deductBalance(order);
+        this.executeOrder(order);
+        
+        //
+    }
+
+    executeOrder = (newOrder) => {
+        const arr = [];
+        const store = [];
+        const order = {
+            ...newOrder,
+            id: `order-book-${this.props.orders.length+1}`,
+            user: this.props.user,
+            closed: false,
+            originalVolume: newOrder.volume
+        }
+        
+        const type = order.type === 'ask' ? 'bid' : 'ask';
+        for(let key in this.props.orders){
+            if(this.props.orders[key].type === type){
+                arr.push({
+                    ...this.props.orders[key]
+                })
+            } else {
+                store.push({
+                    ...this.props.orders[key]
+                })
+            }
+        }
+
+        order.type === 'ask' ? arr.sort((a, b) => b.price - a.price) : arr.sort((a, b) => a.price - b.price);
+
+        for(let key in arr){
+            const isAsk = type === 'ask' ? order.price >= arr[key].price : order.price <= arr[key].price;
+            if(isAsk && !arr[key].closed && !order.closed) {
+                let priceDifference = order.price - arr[key].price;
+                if(order.volume > arr[key].volume) {
+                    console.log("More volume on order")
+                    // We can close arr[key]
+                    arr[key].closed = true;
+                    // Reduce volume for both order
+                    let volume = arr[key].volume; //Also the volume sold
+                    arr[key].volume = 0;
+                    order.volume = order.volume - volume;
+                    // Return balance
+                    this.props.returnBalance(order, priceDifference, volume);
+                    
+
+                } else if(order.volume < arr[key].volume) {
+                    console.log("Less volume on order")
+                    // We can close order.
+                    order.closed = true;
+                    // Reduce volume for both order
+                    let volume = order.volume;
+                    order.volume = 0;
+                    arr[key].volume = arr[key].volume - volume;
+                    //Return Balance
+                    this.props.returnBalance(order, priceDifference, volume);
+
+                } else {
+                    console.log("Equal volume on order")
+                    // We close both order and arr[key]
+                    order.closed = true;
+                    arr[key].closed = true;
+                    // Reduce volume for both order
+                    let volume = order.volume;
+                    order.volume = 0;
+                    arr[key].volume = 0;
+                    this.props.returnBalance(order, 0, volume);
+
+                }
+            }
+        }
+
+        const updatedState = {
+            order: [...arr.concat(order).concat(store)],
+            hasOrdered: true
+        }
+
+        this.props.executeOrder(updatedState);
     }
 
     render () {
@@ -214,8 +292,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateBalance: (balance) => dispatch(actionTypes.updateBalance(balance)),
-        executeOrder: (order, user) => dispatch(actionTypes.executeOrder(order, user)),
+        deductBalance: (balance) => dispatch(actionTypes.deductBalance(balance)),
+        executeOrder: (order) => dispatch(actionTypes.executeOrder(order)),
+        returnBalance: (order, priceDifference, volumeSold) => dispatch(actionTypes.returnBalance(order, priceDifference, volumeSold))
     }
 }
 

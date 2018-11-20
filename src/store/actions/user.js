@@ -13,9 +13,20 @@ export const changeName = (name) => {
     }
 }
 
-export const updateBalance = (order) => {
+export const deductBalance = (order) => {
     return {
-        type: actionTypes.UPDATE_BALANCE,
+        type: actionTypes.DEDUCT_BALANCE,
         order: order
+    }
+}
+
+export const returnBalance = (order, priceDifference, volumeSold) => {
+    console.log(order)
+    return {
+        type: actionTypes.RETURN_BALANCE,
+        orderType: order.type,
+        price: order.price,
+        priceDifference: priceDifference,
+        volumeSold: volumeSold
     }
 }

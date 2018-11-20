@@ -1,5 +1,6 @@
 export const USER_INIT = 'USER_INIT';
 export const CHANGE_NAME = 'CHANGE_NAME';
-export const UPDATE_BALANCE = 'UPDATE_BALANCE';
+export const DEDUCT_BALANCE = 'DEDUCT_BALANCE';
+export const RETURN_BALANCE = 'RETURN_BALANCE';
 
 export const EXECUTE_ORDER = 'EXECUTE_ORDER';

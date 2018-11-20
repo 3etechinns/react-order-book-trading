@@ -1,9 +1,8 @@
 import * as actionTypes from '../actions/actionTypes';
 
-export const executeOrder = (order, user) => {
+export const executeOrder = (order) => {
     return {
         type: actionTypes.EXECUTE_ORDER,
-        order: order,
-        user: user
+        state: order
     }
 }

@@ -1,7 +1,8 @@
 export {
     userInit,
     changeName,
-    updateBalance
+    deductBalance,
+    returnBalance
 } from './user';
 
 export {
