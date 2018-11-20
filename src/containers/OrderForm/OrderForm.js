@@ -178,6 +178,7 @@ class OrderForm extends Component {
             }
 
             this.props.updateBalance(updatedBalance)
+            this.props.addOrder(order, this.props.user);
         } else if(order.type === 'ask') {
             const updatedBalance = [
                 ...this.props.balance
@@ -189,6 +190,7 @@ class OrderForm extends Component {
             }
 
             this.props.updateBalance(updatedBalance)
+            this.props.addOrder(order, this.props.user);
         }
     }
 
@@ -233,6 +235,7 @@ class OrderForm extends Component {
 const mapStateToProps = state => {
     return {
         orders: state.order,
+        user: state.user.name,
         balance: state.user.balances,
         symbolFiat: state.user.balances[0].symbol,
         balanceFiat: state.user.balances[0].balance,
@@ -243,7 +246,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateBalance: (balance) => dispatch(actionTypes.updateBalance(balance))
+        updateBalance: (balance) => dispatch(actionTypes.updateBalance(balance)),
+        addOrder: (order, user) => dispatch(actionTypes.addOrder(order, user))
     }
 }
 

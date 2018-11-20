@@ -10,9 +10,11 @@ export const executeOrder = (order) => {
     
 }
 
-export const addOrder = () => {
+export const addOrder = (order, user) => {
     return {
-        type: actionTypes.ADD_ORDER
+        type: actionTypes.ADD_ORDER,
+        order: order,
+        user: user
     }
 }
 

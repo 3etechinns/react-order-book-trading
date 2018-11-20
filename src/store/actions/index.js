@@ -3,3 +3,7 @@ export {
     changeName,
     updateBalance
 } from './user';
+
+export {
+    addOrder
+} from './order';

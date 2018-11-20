@@ -58,7 +58,7 @@ class OrderBook extends Component {
 
 const mapStateToProps = state => {
     return {
-        orders: state.order,
+        orders: state.order.order,
         symbol: state.user.balances[0].symbol
     }
 }
