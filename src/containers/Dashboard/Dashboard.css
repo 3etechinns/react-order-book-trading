@@ -7,3 +7,14 @@
     width: 75%;
     margin-left: 12px;
 }
+
+@media screen and (max-width: 768px) {
+    .Main {
+        flex-direction: column;
+    }
+
+    .Row {
+        width: 100%;
+        margin-left: 0;
+    }
+}
