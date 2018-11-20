@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 
+import * as actionTypes from '../../store/actions/index';
+
 class OrderForm extends Component {
 
     state = {
@@ -13,16 +15,16 @@ class OrderForm extends Component {
                 config: {
                     options: [
                         {
-                            value: 'ask',
-                            displayValue: 'Ask'
+                            value: 'bid',
+                            displayValue: 'Buy (Bid)'
                         },
                         {
-                            value: 'bid',
-                            displayValue: 'Bid'
+                            value: 'ask',
+                            displayValue: 'Sell (Ask)'
                         },
                     ]
                 },
-                value: 'ask',
+                value: 'bid',
                 validation: {
                     required: true
                 },
@@ -33,7 +35,8 @@ class OrderForm extends Component {
                 config: {
                     type: 'number',
                     placeholder: 'Price',
-                    min:'0'
+                    min:'0',
+                    step:'any'
                 },
                 value: '',
                 validation: {
@@ -49,7 +52,8 @@ class OrderForm extends Component {
                 config: {
                     type: 'number',
                     placeholder: 'Volume',
-                    min:'0'
+                    min:'0',
+                    step:'any'
                 },
                 value: '',
                 validation: {
@@ -65,7 +69,8 @@ class OrderForm extends Component {
                 config: {
                     type: 'number',
                     placeholder: 'Total',
-                    min:'0'
+                    min:'0',
+                    step:'any'
                 },
                 value: '',
                 validation: {
@@ -86,14 +91,9 @@ class OrderForm extends Component {
         const updatedOrderForm = {
             ...this.state.orderForm
         }
-
-        const updatedOrderElement = {
-            ...updatedOrderForm[elementID]
-        }
         
-        updatedOrderElement.value = event.target.value;
-        updatedOrderElement.touched = true;
-        updatedOrderForm[elementID] = updatedOrderElement;
+        updatedOrderForm[elementID].value = event.target.value;
+        updatedOrderForm[elementID].touched = true;
 
         if(elementID === "price" && updatedOrderForm['volume'].value > 0 || elementID === "volume" && updatedOrderForm['price'].value > 0) {
             updatedOrderForm['total'].value = updatedOrderForm['volume'].value * updatedOrderForm['price'].value;
@@ -110,12 +110,11 @@ class OrderForm extends Component {
             formIsValid = updatedOrderForm[elementID].valid && formIsValid;
         }
 
-        this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid})
+        this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid, errorMessage: null})
     }
 
     checkValidity = (value, rules) => {
         let isValid = true;
-
         if (!rules) {
             return true;
         }
@@ -125,12 +124,12 @@ class OrderForm extends Component {
         }
 
         if (rules.isNumber) {
-            const re = /^\d+$/;
+            const re = /^-{0,1}\d*\.{0,1}\d+$/;
             isValid = isValid && re.test(String(value).toLowerCase());
         }
 
         if (rules.minNumber || rules.minNumber === 0) {
-            isValid = isValid && value > rules.minNumber
+            isValid = isValid && value >= rules.minNumber + 0.0001
         }
 
         return isValid;
@@ -138,7 +137,7 @@ class OrderForm extends Component {
 
     orderHandler = (event) => {
         event.preventDefault();
-        
+
         const formData = {};
         for (let formElementIdentifier in this.state.orderForm) {
             if(this.state.orderForm[formElementIdentifier].value<=0) {
@@ -153,9 +152,43 @@ class OrderForm extends Component {
             ...formData
         }
 
-        if(order.total > this.props.balance) {
-            this.setState({errorMessage: `ERROR: You only have ${this.props.symbol} ${this.props.balance}.`})
+        if(order.type === 'bid' && order.total > this.props.balanceFiat ) {
+            this.setState({errorMessage: `ERROR: You only have ${this.props.symbolFiat} ${this.props.balanceFiat}.`})
             return
+        } else if(order.type ==='ask' && order.volume > this.props.balanceCrypto) {
+            this.setState({errorMessage: `ERROR: You only have ${this.props.symbolCrypto} ${this.props.balanceCrypto}.`})
+            return
+        }
+
+        // If it reaches here, I can edit value for the balance.
+        this.addOrder(order);
+    }
+
+    addOrder = (order) => {
+        // If buying, you lose PHP,
+        // If selling, you lose TestCoin
+        if(order.type === 'bid') {
+            const updatedBalance = [
+                ...this.props.balance
+            ]
+
+            updatedBalance[0] = {
+                ...updatedBalance[0],
+                balance: updatedBalance[0].balance - order.total
+            }
+
+            this.props.updateBalance(updatedBalance)
+        } else if(order.type === 'ask') {
+            const updatedBalance = [
+                ...this.props.balance
+            ]
+
+            updatedBalance[1] = {
+                ...updatedBalance[1],
+                balance: updatedBalance[1].balance - order.volume
+            }
+
+            this.props.updateBalance(updatedBalance)
         }
     }
 
@@ -186,6 +219,7 @@ class OrderForm extends Component {
 
         return (
             <div className={classes.OrderForm}>
+                <div className={classes.PlaceOrder}>Place Limit Order</div>
                 <form onSubmit={this.orderHandler}>
                     {form}
                     <Button btnType="Success" disabled={!this.state.formIsValid}>Order</Button>
@@ -199,9 +233,18 @@ class OrderForm extends Component {
 const mapStateToProps = state => {
     return {
         orders: state.order,
-        symbol: state.user.balances[0].symbol,
-        balance: state.user.balances[0].balance
+        balance: state.user.balances,
+        symbolFiat: state.user.balances[0].symbol,
+        balanceFiat: state.user.balances[0].balance,
+        symbolCrypto: state.user.balances[1].symbol,
+        balanceCrypto: state.user.balances[1].balance
     }
 }
 
-export default connect(mapStateToProps, null)(OrderForm);
+const mapDispatchToProps = dispatch => {
+    return {
+        updateBalance: (balance) => dispatch(actionTypes.updateBalance(balance))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrderForm);

@@ -7,9 +7,16 @@ const initialState = {
     ...order
 }
 
+const validateOrder = (state, action) => {
+    
+}
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        
+        case actionTypes.VALIDATE_ORDER: return;
+        case actionTypes.ADD_ORDER: return;
+        case actionTypes.CLOSE_ORDER: return;
+        case actionTypes.REMOVE_ORDER: return;
         default:
             return state;
     }

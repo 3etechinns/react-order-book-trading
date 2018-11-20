@@ -1,0 +1,9 @@
+.Main {
+    display: flex;
+    flex-direction: row;
+}
+
+.Row {
+    width: 75%;
+    margin-left: 12px;
+}

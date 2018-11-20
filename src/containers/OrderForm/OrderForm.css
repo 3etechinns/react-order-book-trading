@@ -1,0 +1,17 @@
+.OrderForm {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 8px auto;
+    -webkit-box-shadow: 0 2px 3px #000;
+    box-shadow: 0 2px 3px #000;
+    background-color: #34495e;
+}
+
+.PlaceOrder {
+    font-weight: bold;
+    background-color: #19bd9b;
+    border-bottom: 2px solid #dddddd;
+    color: #34495e;
+    padding: 12px;
+}

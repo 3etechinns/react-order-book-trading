@@ -12,7 +12,10 @@ const changeName = (state, action) => {
 }
 
 const updateBalance = (state, action) => {
-    return updateObject(state, {balance: action.balance})
+    const updatedState = {
+        balances: [...action.balances]
+    }
+    return updateObject(state, updatedState)
 }
 
 const reducer = (state = initialState, action) => {
