@@ -77,7 +77,8 @@ class OrderForm extends Component {
                 touched: false
             }
         },
-        formIsValid: false
+        formIsValid: false,
+        errorMessage: null
     }
 
     inputChangeHandler = (event, elementID) => {
@@ -135,6 +136,29 @@ class OrderForm extends Component {
         return isValid;
     }
 
+    orderHandler = (event) => {
+        event.preventDefault();
+        
+        const formData = {};
+        for (let formElementIdentifier in this.state.orderForm) {
+            if(this.state.orderForm[formElementIdentifier].value<=0) {
+                this.setState({errorMessage: "ERROR: Total is below 0."})
+                return
+            }
+
+            formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
+        }
+
+        const order = {
+            ...formData
+        }
+
+        if(order.total > this.props.balance) {
+            this.setState({errorMessage: `ERROR: You only have ${this.props.symbol} ${this.props.balance}.`})
+            return
+        }
+    }
+
     render () {
         
         const arr = [];
@@ -165,6 +189,7 @@ class OrderForm extends Component {
                 <form onSubmit={this.orderHandler}>
                     {form}
                     <Button btnType="Success" disabled={!this.state.formIsValid}>Order</Button>
+                    {this.state.errorMessage}
                 </form>
             </div>
         )
@@ -174,7 +199,8 @@ class OrderForm extends Component {
 const mapStateToProps = state => {
     return {
         orders: state.order,
-        symbol: state.user.balances[0].symbol
+        symbol: state.user.balances[0].symbol,
+        balance: state.user.balances[0].balance
     }
 }
 
