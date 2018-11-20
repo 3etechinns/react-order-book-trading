@@ -7,7 +7,10 @@ export const validateOrder = () => {
 }
 
 export const executeOrder = (order) => {
-    
+    return {
+        type: actionTypes.EXECUTE_ORDER,
+        order: order
+    }
 }
 
 export const addOrder = (order, user) => {
@@ -21,7 +24,7 @@ export const addOrder = (order, user) => {
 export const closeOrder = (balance) => {
     return {
         type: actionTypes.CLOSE_ORDER,
-        balance: balance
+        order: order,
     }
 }
 

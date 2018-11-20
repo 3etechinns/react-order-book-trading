@@ -13,9 +13,9 @@ export const changeName = (name) => {
     }
 }
 
-export const updateBalance = (balance) => {
+export const updateBalance = (order) => {
     return {
         type: actionTypes.UPDATE_BALANCE,
-        balances: balance
+        order: order
     }
 }

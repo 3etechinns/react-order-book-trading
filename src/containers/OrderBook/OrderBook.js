@@ -17,11 +17,11 @@ class OrderBook extends Component {
         const asks = [];
         const bids = [];
         for(let key in this.props.orders){
-            if(this.props.orders[key].type === "ask"){
+            if(this.props.orders[key].type === "ask" && !this.props.orders[key].closed){
                 asks.push({
                     ...this.props.orders[key]
                 })
-            } else if(this.props.orders[key].type === "bid"){
+            } else if(this.props.orders[key].type === "bid" && !this.props.orders[key].closed){
                 bids.push({
                     ...this.props.orders[key]
                 })

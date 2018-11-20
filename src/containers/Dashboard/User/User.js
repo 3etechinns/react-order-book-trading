@@ -8,7 +8,6 @@ import Info from '../../../components/Info/Info';
 
 class User extends Component{
     render () {
-        console.log(classes)
         return (
             <div className={classes.User}>
                 <div className={classes.Picture}>

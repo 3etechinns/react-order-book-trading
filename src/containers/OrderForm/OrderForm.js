@@ -153,45 +153,16 @@ class OrderForm extends Component {
         }
 
         if(order.type === 'bid' && order.total > this.props.balanceFiat ) {
-            this.setState({errorMessage: `ERROR: You only have ${this.props.symbolFiat} ${this.props.balanceFiat}.`})
+            this.setState({errorMessage: `ERROR: You only have ${this.props.balance[0].symbol} ${this.props.balance[0].price}.`})
             return
         } else if(order.type ==='ask' && order.volume > this.props.balanceCrypto) {
-            this.setState({errorMessage: `ERROR: You only have ${this.props.symbolCrypto} ${this.props.balanceCrypto}.`})
+            this.setState({errorMessage: `ERROR: You only have ${this.props.balance[1].symbol} ${this.props.balance[1].symbol}.`})
             return
         }
 
         // If it reaches here, I can edit value for the balance.
-        this.addOrder(order);
-    }
-
-    addOrder = (order) => {
-        // If buying, you lose PHP,
-        // If selling, you lose TestCoin
-        if(order.type === 'bid') {
-            const updatedBalance = [
-                ...this.props.balance
-            ]
-
-            updatedBalance[0] = {
-                ...updatedBalance[0],
-                balance: updatedBalance[0].balance - order.total
-            }
-
-            this.props.updateBalance(updatedBalance)
-            this.props.addOrder(order, this.props.user);
-        } else if(order.type === 'ask') {
-            const updatedBalance = [
-                ...this.props.balance
-            ]
-
-            updatedBalance[1] = {
-                ...updatedBalance[1],
-                balance: updatedBalance[1].balance - order.volume
-            }
-
-            this.props.updateBalance(updatedBalance)
-            this.props.addOrder(order, this.props.user);
-        }
+        this.props.updateBalance(order);
+        this.props.executeOrder(order);
     }
 
     render () {
@@ -234,20 +205,17 @@ class OrderForm extends Component {
 
 const mapStateToProps = state => {
     return {
-        orders: state.order,
+        orders: state.order.order,
         user: state.user.name,
-        balance: state.user.balances,
-        symbolFiat: state.user.balances[0].symbol,
-        balanceFiat: state.user.balances[0].balance,
-        symbolCrypto: state.user.balances[1].symbol,
-        balanceCrypto: state.user.balances[1].balance
+        balance: state.user.balances
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         updateBalance: (balance) => dispatch(actionTypes.updateBalance(balance)),
-        addOrder: (order, user) => dispatch(actionTypes.addOrder(order, user))
+        addOrder: (order, user) => dispatch(actionTypes.addOrder(order, user)),
+        executeOrder: (order) => dispatch(actionTypes.executeOrder(order)),
     }
 }
 

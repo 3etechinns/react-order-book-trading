@@ -5,5 +5,6 @@ export {
 } from './user';
 
 export {
-    addOrder
+    addOrder,
+    executeOrder
 } from './order';

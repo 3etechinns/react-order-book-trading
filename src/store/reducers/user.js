@@ -12,8 +12,30 @@ const changeName = (state, action) => {
 }
 
 const updateBalance = (state, action) => {
+    let updatedBalance = null;
+    if(action.order.type === 'bid') {
+        updatedBalance = [
+            ...state.balances
+        ]
+
+        updatedBalance[0] = {
+            ...updatedBalance[0],
+            balance: updatedBalance[0].balance - action.order.total
+        }
+
+    } else if(action.order.type === 'ask') {
+        updatedBalance = [
+            ...state.balances
+        ]
+
+        updatedBalance[1] = {
+            ...updatedBalance[1],
+            balance: updatedBalance[1].balance - action.order.volume
+        }
+    }
+
     const updatedState = {
-        balances: [...action.balances]
+        balances: [...updatedBalance]
     }
     return updateObject(state, updatedState)
 }
