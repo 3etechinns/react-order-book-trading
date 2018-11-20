@@ -2,8 +2,10 @@
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
-    max-width: 500px;
-    margin: 8px 0;
+    max-width: 768px;
+    margin: 8px auto;
+    -webkit-box-shadow: 0 2px 3px #000;
+    box-shadow: 0 2px 3px #000;
 }
 
 td, th {

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 
-import Handle from '../../components/Handle/Handle';
+import classes from './Dashboard.css';
+import NameHandle from '../../components/NameHandle/NameHandle';
 import Modal from '../../components/UI/Modal/Modal';
 import User from './User/User';
 import OrderBook from '../OrderBook/OrderBook';
+import OrderForm from '../OrderForm/OrderForm';
 
 class Dashboard extends Component{
     state = {
@@ -16,13 +18,18 @@ class Dashboard extends Component{
 
     render () {
         return (
-            <div>
+            <div className={classes.Dashboard}>
                 <Modal show={this.state.createName}>
-                    <Handle closeModal={this.closeModal}/>
+                    <NameHandle closeModal={this.closeModal}/>
                 </Modal>
                 
                 <User isNameSet={!this.state.createName} />
-                <OrderBook />
+                <div className={classes.Main}>
+                    <OrderBook />
+                    <div className={classes.Row}>
+                        <OrderForm />
+                    </div>
+                </div>
             </div>
         )
     }

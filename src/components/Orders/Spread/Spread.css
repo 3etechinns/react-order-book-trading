@@ -1,5 +1,7 @@
 .Row {
     border: 2px solid #dddddd;
+    border-right: none;
+    border-left: none;
 }
 
 .Row td {

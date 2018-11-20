@@ -5,7 +5,7 @@ import * as actions from '../../store/actions/index';
 import Input from '../UI/Input/Input';
 import Button from '../UI/Button/Button';
 
-class Handle extends Component {
+class NameHandle extends Component {
     state = {
         name: {
             value: "",
@@ -95,4 +95,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Handle);
+export default connect(null, mapDispatchToProps)(NameHandle);

@@ -1,9 +1,14 @@
 .App {
     margin: 5px;
     box-sizing: border-box;
+    font-family: "Open Sans", Arial, Helvetica, sans-serif;
 }
 
 .Title {
     font-size: 5.5em;
     color: #0f0;
+}
+
+body {
+    background-color: #366B69;
 }
